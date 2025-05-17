@@ -19,7 +19,7 @@ public class forceclaim implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         // Expect: /townyadmin claim <town> <x> <z>
         if (args.length < 3) {
-            TownyMessaging.sendErrorMsg(sender, "Usage: /townyadmin claim <town> <x> <z> <flags>");
+            TownyMessaging.sendErrorMsg(sender, "Usage: /townyadmin claim <town> <x> <z> <flag>");
             return true;
         }
 
@@ -34,7 +34,7 @@ public class forceclaim implements CommandExecutor {
         int chunkX,chunkZ;
         int coordx,coordy;
 
-        if (args.length > 4 && "-w".equalsIgnoreCase(args[4])) {
+        if (args.length == 4 && "-w".equalsIgnoreCase(args[3])) {
             chunkX = Integer.parseInt(args[1]);
             chunkZ = Integer.parseInt(args[2]);
         }else{
@@ -45,7 +45,7 @@ public class forceclaim implements CommandExecutor {
             chunkX = c.getX();
             chunkZ = c.getZ();
         }
-        Coord coord = Coord.parseCoord(chunkX, chunkZ);
+        Coord coord = new Coord(chunkX, chunkZ);
 
        /* if (world.hasTownBlock(coord)) {
             try {
