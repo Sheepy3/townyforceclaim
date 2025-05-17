@@ -1,0 +1,6 @@
+name: Towny-Forceclaim
+version: '1.0-SNAPSHOT'
+main: towny.sheepy.townyForceclaim.TownyForceclaim
+api-version: '1.21'
+softdepend:
+  - Towny
