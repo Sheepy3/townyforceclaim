@@ -18,8 +18,8 @@ public class forceclaim implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         // Expect: /townyadmin claim <town> <x> <z>
-        if (args.length != 3) {
-            TownyMessaging.sendErrorMsg(sender, "Usage: /townyadmin claim <town> <x> <z>");
+        if (args.length < 3) {
+            TownyMessaging.sendErrorMsg(sender, "Usage: /townyadmin claim <town> <x> <z> <flags>");
             return true;
         }
 
@@ -31,22 +31,29 @@ public class forceclaim implements CommandExecutor {
         }
 
         TownyWorld world = TownyAPI.getInstance().getTownyWorld("world");
-
+        int chunkX,chunkZ;
         int coordx,coordy;
-        coordx=Integer.parseInt(args[1]);
-        coordy=Integer.parseInt(args[2]);
-        WorldCoord worldCoord = WorldCoord.parseWorldCoord(String.valueOf(world), coordx,coordy);
-        Coord coord =worldCoord.getCoord();
-        int chunkX= coord.getX();
-        int chunkZ= coord.getZ();
 
-        if (world.hasTownBlock(coord)) {
+        if (args.length > 4 && "-w".equalsIgnoreCase(args[4])) {
+            chunkX = Integer.parseInt(args[1]);
+            chunkZ = Integer.parseInt(args[2]);
+        }else{
+            coordx = Integer.parseInt(args[1]);
+            coordy = Integer.parseInt(args[2]);
+            WorldCoord worldCoord = WorldCoord.parseWorldCoord(String.valueOf(world), coordx, coordy);
+            Coord c = worldCoord.getCoord();
+            chunkX = c.getX();
+            chunkZ = c.getZ();
+        }
+        Coord coord = Coord.parseCoord(chunkX, chunkZ);
+
+       /* if (world.hasTownBlock(coord)) {
             try {
                 TownBlock townblock = TownyUniverse.getInstance().getTownBlock(worldCoord);
                 TownyMessaging.sendErrorMsg(sender, "Chunk " + coord.toString() + " is already claimed by" + townblock.getTown().getName());
             } catch (NotRegisteredException e) {
                 TownyMessaging.sendMsg(sender, "Chunk " + coord + " is unclaimed.");            }
-        }
+        }*/
 
 
         try {
