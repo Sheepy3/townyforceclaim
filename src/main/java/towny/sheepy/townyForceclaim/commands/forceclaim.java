@@ -48,6 +48,25 @@ public class forceclaim implements CommandExecutor {
                 TownyMessaging.sendMsg(sender, "Chunk " + coord + " is unclaimed.");            }
         }
 
+
+        try {
+            TownBlock oldBlock = world.getTownBlock(coord);
+            Town oldTown = oldBlock.getTown();
+
+            // Unregister from the old town and global maps
+            oldTown.removeTownBlock(oldBlock);
+            TownyUniverse.getInstance().removeTownBlock(oldBlock);
+            //oldBlock.clear();  // remove from disk
+
+            TownyMessaging.sendMsg(sender,
+                    String.format("Removed claim at %s from town %s.", coord, oldTown.getName())
+            );
+        } catch (NotRegisteredException ignored) {
+            // no existing claim — nothing to remove
+        }
+
+
+
         // Create & register the claim
         TownyMessaging.sendMsg(sender,
                 String.format("registering claim..."+coord.toString()));
